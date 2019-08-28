@@ -129,4 +129,6 @@ AUTH_USER_MODEL = "user.User"
 #Crispy template
 CRISPY_TEMPLATE_PACK="bootstrap4"
 
-LOGIN_REDIRECT_URL='owner.home'
+LOGIN_REDIRECT_URL='redirect-page'
+
+LOGIN_URL = 'login'
