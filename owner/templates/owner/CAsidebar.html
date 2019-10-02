@@ -1,0 +1,36 @@
+<nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Saptshrungi</h3>
+        </div>
+
+        <ul class="list-unstyled components" id="menu">
+            <p><a href="{% url 'owner.home' %}">CA Dashboard</a></p>
+
+            <li>
+                <a href="{% url 'owner.workersList' %}">Employees</a>
+            </li>
+
+            <li>
+                <a href="{% url 'owner.clientsList' %}">Clients</a>
+            </li>
+
+            <li>
+                <a href="{% url 'owner.servicesList' %}">Services</a>
+            </li>
+            <li>
+                <a href="#taskSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Task</a>
+                <ul class="collapse list-unstyled" id="taskSubmenu">
+                    <li>
+                        <a href="{% url 'owner.assignedTaskList' request.user.id %}">Task assigned to me</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'owner.tasksList' %}">All tasks</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'owner.createTask' %}">Create new task</a>
+                    </li>
+                </ul>
+
+            </li>
+        </ul>
+</nav>

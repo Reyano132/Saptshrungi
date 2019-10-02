@@ -1,0 +1,22 @@
+<nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Saptshrungi</h3>
+        </div>
+
+        <ul class="list-unstyled components" id="menu">
+            <p><a href="{% url 'worker.home' %}">Worker's Dashboard</a></p>
+        
+
+           <li>
+                <a href="{% url 'owner.clientsList' %}">Clients</a>
+            </li>
+
+            <li>
+                <a href="{% url 'owner.servicesList' %}">Services</a>
+            </li>
+            <li>
+                <a href="{% url 'owner.assignedTaskList' request.user.id %}">Task</a>
+            </li>
+
+        </ul>
+</nav>

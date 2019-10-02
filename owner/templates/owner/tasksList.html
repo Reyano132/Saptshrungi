@@ -1,0 +1,59 @@
+{% extends 'owner/CAbase.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}
+ Tasks
+{% endblock title %}
+
+
+{% block sidebar %}
+{% if request.user.isCA %}
+{% include 'owner/CAsidebar.html' %}
+{% else %}
+{% include 'worker/workerSidebar.html' %}
+{% endif %}
+{% endblock sidebar %}
+
+{% block header %}
+<h2 style="margin: 5px">Tasks</h2>
+{% endblock header %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static 'owner/css/fontastic.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'owner/css/style.default.css' %}"/>
+{% endblock style %}
+
+{% block content %}
+<div class="container">
+<input type="text" id="search" name="q" placeholder="search clients by name" style="font-size: 19px" autocomplete="off">
+<br><br>
+          <section class="projects no-padding-top">
+            <div class="container">
+              {% for task in tasks %}
+              <div class="project">
+                <a href="{% url 'owner.taskDetails' task.id %}">
+                <div class="row bg-white has-shadow">
+                  <div class="left-col col-lg-6 d-flex align-items-center justify-content-between">
+                    <div class="project-title d-flex align-items-center">
+                      <div class="text">
+                        <h3 class="h4">{{ task.service }}</h3><small>{{ task.assigned_to }}</small>
+                      </div>
+                    </div>
+                    <div class="project-date"><span class="hidden-sm-down">{{ task.created }}</span></div>
+                  </div>
+                  <div class="right-col col-lg-6 d-flex align-items-center">
+                    <div class="comments">Progress</div>
+                    <div class="project-progress">
+                      <div class="progress">
+                        <div role="progressbar" style="width: {{ task.progress }}%; height: 6px;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" class="progress-bar bg-blue" ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+              </div>
+              {% endfor %}
+          </div>
+        </section>
+</div>
+{% endblock content %}

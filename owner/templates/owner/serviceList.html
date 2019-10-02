@@ -1,0 +1,60 @@
+{% extends 'owner/CAbase.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+ Services
+{% endblock title %}
+
+
+{% block sidebar %}
+{% if request.user.isCA %}
+{% include 'owner/CAsidebar.html' %}
+{% else %}
+{% include 'worker/workerSidebar.html' %}
+{% endif %}
+{% endblock sidebar %}
+
+{% block header %}
+<h2 style="margin: 5px">Services</h2>
+{% endblock header %}
+
+{% block content %}
+<div class="container">
+<input type="text" id="search" name="q" placeholder="search by name" style="font-size: 19px" autocomplete="off">
+<br><br>
+<table class="table table-striped table-hover">
+<tbody>
+{% for service in services %}
+ <tr><td><a href="{% url 'owner.serviceDetails' service.id %}">{{ service.name }}</a></td></tr>
+{% endfor %}
+</tbody>
+</table>
+<a href="{% url 'owner.addService' %}" class="btn btn-outline-primary">Add new service</a>
+</div>
+{% endblock content %}
+
+
+{% block js %}
+  $("#search").keyup(function(){
+  	
+  	$.ajax({
+  		url: "/ajax/serviceSearch/", 
+  		data:{ q:$('#search').val(), },
+  		dataType: 'json',
+  		success: function(result){
+     		let services=JSON.parse(result['services']);
+     		$('tr').remove();
+     		for(let i=0 ;i< services.length; i++){
+     			let id=services[i]['pk']
+     			let url="/serviceDetails/"+id+"/";
+     			let fields=services[i]['fields'];
+     			let data='<tr><td><a href="'+url+'">'
+     			+fields['name']+
+     			'</a></td></tr>';
+     			$('.table').append(data);
+
+     		}	
+     		
+    }});
+  });
+
+{% endblock js %}

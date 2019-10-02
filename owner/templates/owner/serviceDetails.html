@@ -1,0 +1,34 @@
+{% extends 'owner/CAbase.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+ Service Details
+{% endblock title %}
+
+{% block sidebar %}
+{% if request.user.isCA %}
+{% include 'owner/CAsidebar.html' %}
+{% else %}
+{% include 'worker/workerSidebar.html' %}
+{% endif %}
+{% endblock sidebar %}
+
+{% block header %}
+<h2 style="margin: 5px">Service's Details</h2>
+{% endblock header %}
+
+{% block content %}
+<div class="container">
+<div class="card">
+  <div class="card-body">
+
+   	<h5>Name :</h5> <p class="lead">{{ service.name }} </p>
+    <h5>Description : </h5> <p class="lead">{{ service.description }}</p>
+    <h5>Documents : </h5> <p class="lead">{{ service.documents }}</p>
+
+    <a href="{% url 'owner.updateService' service.id %}" class="btn btn-outline-primary">Edit</a>
+    <a href="{% url 'owner.taskCreated' service.id %}" class="btn btn-outline-primary">Task Created</a>
+    <a href="{% url 'owner.deleteService' service.id %}" class="btn btn-outline-danger">Delete</a>
+  </div>
+</div>
+</div>
+{% endblock content %}

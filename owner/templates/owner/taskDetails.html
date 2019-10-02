@@ -1,0 +1,37 @@
+
+{% extends 'owner/CAbase.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+ Task Details
+{% endblock title %}
+
+
+{% block sidebar %}
+{% include 'owner/CAsidebar.html' %}
+{% endblock sidebar %}
+
+{% block header %}
+<h2 style="margin: 5px">Task's Details</h2>
+
+{% endblock header %}
+
+{% block content %}
+<div class="container">
+<div class="jumbotron">
+  
+
+   	<b>Service :</b> <p>{{ task.service }}</p>
+    <h5>For client : </h5> <p class="lead">{{ task.for_client }}</p>
+    <h5>Assigned to : </h5> <p class="lead">{{ task.assigned_to }}</p>
+    <h5>Priority : </h5> <p class="lead">{{ task.priority }}</p>
+    <h5>Description : </h5> <p class="lead">{{ task.description }}</p>
+    <h5>Progress : </h5> <p class="lead">{{ task.progress }}</p>
+    
+    <h5>Charges : </h5> <p class="lead">{{ task.charges }}</p>
+
+    <a href="#" class="btn btn-outline-primary">Edit</a>
+    <a href="{% url 'owner.deleteTask' task.id %}" class="btn btn-outline-danger">Delete</a>
+  
+</div>
+</div>
+{% endblock content %}

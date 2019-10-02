@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'task.apps.TaskConfig',
+    'service.apps.ServiceConfig',
+    'client.apps.ClientConfig',
     'user.apps.UserConfig',
     'owner.apps.OwnerConfig',
     'worker.apps.WorkerConfig',
@@ -72,7 +75,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'saptshrungi.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -129,6 +131,8 @@ AUTH_USER_MODEL = "user.User"
 #Crispy template
 CRISPY_TEMPLATE_PACK="bootstrap4"
 
-LOGIN_REDIRECT_URL='redirect-page'
+LOGIN_REDIRECT_URL='owner.redirect-page'
 
 LOGIN_URL = 'login'
+
+
