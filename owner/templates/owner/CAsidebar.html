@@ -21,7 +21,7 @@
                 <a href="#taskSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Task</a>
                 <ul class="collapse list-unstyled" id="taskSubmenu">
                     <li>
-                        <a href="{% url 'owner.assignedTaskList' request.user.id %}">Task assigned to me</a>
+                        <a href="{% url 'owner.assignedTaskList' request.user.id %}">Task assigned to me  <span class="badge badge-light badge-pill" id="notification"></span></a>
                     </li>
                     <li>
                         <a href="{% url 'owner.tasksList' %}">All tasks</a>

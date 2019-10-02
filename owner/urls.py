@@ -28,6 +28,7 @@ urlpatterns = [
     path('serviceDetails/<int:pk>/delete/',views.DeleteService.as_view(), name='owner.deleteService'),
     path('serviceDetails/<int:pk>/taskCreated',views.TaskCreated.as_view(), name='owner.taskCreated'),
     path('ajax/serviceSearch/',views.SearchService.as_view(), name='owner.serviceSearch'),
+    path('ajax/getNotification/',views.GetNotification.as_view(), name='owner.getNotification'),
     path('taskDetails/<int:pk>/',views.TaskDetails.as_view(), name='owner.taskDetails'),
     path('taskDetails/<int:pk>/delete',views.DeleteTask.as_view(), name='owner.deleteTask'),
     path('tasksList/',views.TasksList.as_view(), name='owner.tasksList'),

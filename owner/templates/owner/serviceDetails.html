@@ -23,7 +23,15 @@
 
    	<h5>Name :</h5> <p class="lead">{{ service.name }} </p>
     <h5>Description : </h5> <p class="lead">{{ service.description }}</p>
-    <h5>Documents : </h5> <p class="lead">{{ service.documents }}</p>
+    <h5>Documents : </h5>
+
+    <table class="table table-striped table-hover">
+	<tbody>
+	{% for document in service.documents %}
+	 <tr><td>{{ document }}</td></tr>
+	{% endfor %}
+	</tbody>
+	</table>
 
     <a href="{% url 'owner.updateService' service.id %}" class="btn btn-outline-primary">Edit</a>
     <a href="{% url 'owner.taskCreated' service.id %}" class="btn btn-outline-primary">Task Created</a>

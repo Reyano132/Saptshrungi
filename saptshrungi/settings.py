@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'task.apps.TaskConfig',
     'service.apps.ServiceConfig',
     'client.apps.ClientConfig',
@@ -76,6 +77,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'saptshrungi.wsgi.application'
 
+ASGI_APPLICATION = "saptshrungi.routing.application"
+
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -111,19 +114,23 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+STATIC_ROOT = ''
+
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = ( os.path.join('static'), )
 
 # Added Auth for Abstract User
 AUTH_USER_MODEL = "user.User"
@@ -135,4 +142,10 @@ LOGIN_REDIRECT_URL='owner.redirect-page'
 
 LOGIN_URL = 'login'
 
-
+# Channels
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {"hosts": [("localhost", 6379)]},
+    }
+}

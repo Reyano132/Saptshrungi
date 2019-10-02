@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -14,6 +15,8 @@
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    {% load static %}
+    <script type="text/javascript" src="{% static '/channels/js/websocketbridge.js' %}"></script>
 
     {% block style %}
     {% endblock style %}
@@ -265,7 +268,7 @@
                                 <a class="nav-link" href="#">Welcome, {{ request.user.first_name }} {{ request.user.last_name }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                                <a class="nav-link" href="{% url 'logout' %}" id='logout'>Logout</a>
                             </li>
                         </ul>
                     </div>
@@ -295,24 +298,70 @@
                 $(this).toggleClass('active');
             });
 
-            {% block js %}
-            {% endblock js%}
+            let pk={{ request.user.pk }};
+
+            $.ajax({
+                type: "GET",
+                url: "/ajax/getNotification/", 
+                data:{ q: pk },
+                dataType: 'json',
+                success: function(result){
+                    let temp=result['notification'];
+                    console.log(temp)
+                    if (temp!=0){
+                        $('#notification').html(temp)
+                    }
+                    else{
+                        $('#notification').html()
+                    } 
+                }   
+                    
+            });
+
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+            let csrftoken = getCookie('csrftoken');
+
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
 
             const webSocketBridge = new channels.WebSocketBridge();
-            console.log( "{{ request.user.is_authenticated }}")
-            if( "{{ request.user.is_authenticated }}" == "True" ){
-                console.log("True")
-            }
-          
-            webSocketBridge.connect('/ws/task/');
+            webSocketBridge.connect('/notifications/');
             webSocketBridge.listen(function(action, stream) {
-            console.log("RESPONSE:", action);
-            if(action.event == "New Task") {
-                let temp= ${action.assigned_to.first_name};
-               console.log(temp)
-            }
-          })
-          document.ws = webSocketBridge; /* for debugging */
+                console.log("RESPONSE:", action);
+            
+                if(action.event == "New Task" && pk == action.pk ) {
+                  $('#notification').html(1)
+                }
+              })
+            document.ws = webSocketBridge; /* for debugging */
+            
+
+            {% block js %}
+            {% endblock js%}
 
         });
 

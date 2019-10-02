@@ -8,11 +8,13 @@ from client.models import Client
 from user.models import User
 from service.models import Service
 from django.views import generic
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from django.core import serializers
 from django.db.models import Q
 from django.urls import reverse_lazy
 from task.models import Task
+from django.views.decorators.csrf import csrf_protect
+from django.utils import timezone
 
 
 
@@ -166,7 +168,7 @@ class DeleteService(generic.DeleteView):
 	success_url = reverse_lazy('owner.servicesList')
 
 class SearchService(generic.View):
-	def get(self,request):
+	def get(self,request): 
 		q=request.GET.get('q')
 		services_data=Service.objects.filter(name__icontains=q)
 		services=serializers.serialize("json", services_data,fields=('pk','name'))
@@ -206,6 +208,11 @@ class AssignedTasksList(generic.ListView):
 	paginate_by = 10
 
 	def get_queryset(self):
+		user=self.request.user
+		if int(self.kwargs['pk'])==user.pk:
+			user.last_seen=timezone.now()
+			user.save()
+		
 		return Task.objects.filter(assigned_to=User.objects.get(pk=self.kwargs['pk']))
 
 class ServicesTaken(generic.ListView):
@@ -224,7 +231,30 @@ class TaskCreated(generic.ListView):
 	def get_queryset(self):
 		return Task.objects.filter(service=Service.objects.get(pk=self.kwargs['pk']))
 
+'''
+def storeLastSeen(request):
+	if request.is_ajax():
+		message = "Yes, AJAX!"
+		q=request.POST.get('q')
+		user=User.objects.get(pk=q)
+		user.last_seen=timezone.now()
+		user.save()
+	else:
+		message = "Not Ajax"
+	return JsonResponse({'message':message})
+'''
 
+class GetNotification(generic.View):
+	def get(self,request):
+		q=request.GET.get('q')
+		lenght=0
 
-		
-		
+		if int(q)==self.request.user.pk:
+			user=User.objects.get(pk=q)
+			print(user.last_seen)
+			task_data=Task.objects.filter(assigned_to=User.objects.get(pk=q),modified__gte=user.last_seen)
+			lenght=len(task_data)
+			print(lenght)
+
+		data={'notification':lenght }
+		return JsonResponse(data)

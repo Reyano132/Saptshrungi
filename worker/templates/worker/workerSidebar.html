@@ -15,7 +15,7 @@
                 <a href="{% url 'owner.servicesList' %}">Services</a>
             </li>
             <li>
-                <a href="{% url 'owner.assignedTaskList' request.user.id %}">Task</a>
+                <a href="{% url 'owner.assignedTaskList' request.user.id %}">Task  <span class="badge badge-light badge-pill" id="notification"></span></a>
             </li>
 
         </ul>

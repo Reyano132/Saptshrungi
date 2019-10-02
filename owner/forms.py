@@ -30,9 +30,11 @@ class AddServiceForm(forms.ModelForm):
 
 class CreateTaskForm(forms.ModelForm):
 	priority=forms.ChoiceField(choices=[(x,x) for x in ['Very low','Low', 'Medium', 'High','Very high']])
+	due_date=forms.DateField(widget=DateInput)
 	class Meta:
 		model=Task 
-		fields = ['for_client','assigned_to','service','description','priority','charges']		
+		widget={'due_date':DateInput()}
+		fields = ['for_client','assigned_to','service','description','priority','charges','due_date']		
 			
 	def __init__(self, *args, **kwargs):
 		super(CreateTaskForm, self).__init__(*args, **kwargs)

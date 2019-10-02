@@ -13,7 +13,7 @@ class Task(models.Model):
 	priority=models.CharField(max_length=20)
 	progress=models.IntegerField(default=0)
 	due_date=models.DateField(null=True)
-	created=models.DateTimeField(timezone.now(),null=True,blank=True)
+	created=models.DateTimeField(timezone.now(),null=True)
 	modified= models.DateTimeField(timezone.now(),null=True,blank=True)
 	charges=models.IntegerField(null=True,blank=True)
 
@@ -25,4 +25,4 @@ class Task(models.Model):
 		if not self.id:
 			self.created = timezone.now()
 		self.modified = timezone.now()
-		return super(User, self).save(*args, **kwargs)
+		return super(Task, self).save(*args, **kwargs)
