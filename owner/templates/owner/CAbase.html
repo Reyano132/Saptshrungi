@@ -307,7 +307,6 @@
                 dataType: 'json',
                 success: function(result){
                     let temp=result['notification'];
-                    console.log(temp)
                     if (temp!=0){
                         $('#notification').html(temp)
                     }
@@ -317,7 +316,7 @@
                 }   
                     
             });
-
+           
             function getCookie(name) {
                 var cookieValue = null;
                 if (document.cookie && document.cookie !== '') {
@@ -354,7 +353,9 @@
                 console.log("RESPONSE:", action);
             
                 if(action.event == "New Task" && pk == action.pk ) {
-                  $('#notification').html(1)
+                temp=parseInt($('#notification').html())+1
+                console.log(temp)
+                  $('#notification').html(temp)
                 }
               })
             document.ws = webSocketBridge; /* for debugging */

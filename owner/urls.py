@@ -31,5 +31,7 @@ urlpatterns = [
     path('ajax/getNotification/',views.GetNotification.as_view(), name='owner.getNotification'),
     path('taskDetails/<int:pk>/',views.TaskDetails.as_view(), name='owner.taskDetails'),
     path('taskDetails/<int:pk>/delete',views.DeleteTask.as_view(), name='owner.deleteTask'),
+    path('taskDetails/<int:pk>/update',views.UpdateTask.as_view(), name='owner.updateTask'),
+    path('taskDetails/<int:pk>/updateProgress',views.UpdateTaskProgress.as_view(), name='owner.updateTaskProgress'),
     path('tasksList/',views.TasksList.as_view(), name='owner.tasksList'),
 ]

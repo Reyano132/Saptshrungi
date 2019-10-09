@@ -1,0 +1,36 @@
+{% extends 'owner/CAbase.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+ Worker Details
+{% endblock title %}
+
+
+{% block sidebar %}
+{% include 'owner/CAsidebar.html' %}
+{% endblock sidebar %}
+
+{% block header %}
+<h2 style="margin: 5px">Employee's Details</h2>
+{% endblock header %}
+
+{% block content %}
+{% if request.user.isCA %}
+<div class="container">
+<div class="jumbotron">
+
+   	<h5>Name :</h5> <p class="lead">{{ user.first_name }} {{ user.last_name }}</p>
+    <h5>Phone : </h5> <p class="lead">{{ user.phone_number }}</p>
+    <h5>email : </h5> <p class="lead">{{ user.email }}</p>
+    <h5>birthdate : </h5> <p class="lead">{{ user.birthdate }}</p>
+
+    <a href="{% url 'worker.updateWorker' user.id %}" class="btn btn-outline-primary">Edit</a>
+    <a href="{% url 'task.assignTask' user.id %}" class="btn btn-outline-primary">Assign new task</a>
+    <a href="{% url 'task.assignedTaskList' user.id %}" class="btn btn-outline-primary">Show assigned task</a>
+    <a href="{% url 'worker.deleteWorker' user.id %}" class="btn btn-outline-danger">Delete</a>
+
+</div>
+</div>
+{% else %}
+<h2>You are not autherized person</h2>
+{% endif %}
+{% endblock content %}

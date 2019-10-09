@@ -29,7 +29,7 @@ class AddServiceForm(forms.ModelForm):
 		fields = '__all__'
 
 class CreateTaskForm(forms.ModelForm):
-	priority=forms.ChoiceField(choices=[(x,x) for x in ['Very low','Low', 'Medium', 'High','Very high']])
+	priority=forms.ChoiceField(choices=[(x,x) for x in ['Very low','Low', 'Medium', 'High','Immediate']])
 	due_date=forms.DateField(widget=DateInput)
 	class Meta:
 		model=Task 
@@ -40,6 +40,11 @@ class CreateTaskForm(forms.ModelForm):
 		super(CreateTaskForm, self).__init__(*args, **kwargs)
 		if self.instance:
 			self.fields['assigned_to'].queryset = User.objects.filter(is_superuser = False)
+
+class UpdateProgress(forms.ModelForm):
+	class Meta:
+		model=Task
+		fields=['progress']
 
 class AssignTaskForm(forms.ModelForm):
 	priority=forms.ChoiceField(choices=[(x,x) for x in ['Very low','Low', 'Medium', 'High','Very high']])

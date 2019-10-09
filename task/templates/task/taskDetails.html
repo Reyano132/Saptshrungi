@@ -1,0 +1,201 @@
+
+{% extends 'owner/CAbase.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+ Task Details
+{% endblock title %}
+
+
+{% block sidebar %}
+{% if request.user.isCA %}
+{% include 'owner/CAsidebar.html' %}
+{% else %}
+{% include 'worker/workerSidebar.html' %}
+{% endif %}
+{% endblock sidebar %}
+
+{% block header %}
+<h2 style="margin: 5px">Task's Details</h2>
+
+{% endblock header %}
+
+{% block content %}
+<div class="container">
+<dl class="row">
+  <dt class="col-sm-3">Service:</dt>
+  <dd class="col-sm-9"><a href="{% url 'service.serviceDetails' task.service.pk %}">{{ task.service }}</a></dd>
+
+  <dt class="col-sm-3">For client:</dt>
+  <dd class="col-sm-9">
+    <a href="{% url 'client.clientDetails' task.for_client.pk %}">{{ task.for_client }}</a>
+  </dd>
+
+  <dt class="col-sm-3">Assigned to:</dt>
+  <dd class="col-sm-9">
+    <a href="{% url 'worker.workerDetails' task.assigned_to.pk %}">{{ task.assigned_to }}</a>
+  </dd>
+
+  <dt class="col-sm-3">Created at: </dt>
+  <dd class="col-sm-9">
+    {{ task.created }}
+  </dd>  
+
+  <dt class="col-sm-3">Description: </dt>
+  <dd class="col-sm-9">
+    {{ task.description }}
+  </dd>
+
+  <dt class="col-sm-3">Priority:</dt>
+  <dd class="col-sm-9">
+      {% if task.priority == 'Immediate' %}
+	  <span class="badge badge-pill badge-danger">Immediate</span></td>
+	  {% elif task.priority == 'High' %}
+	  <span class="badge badge-pill badge-success">High</span></td>
+	  {% elif task.priority == 'Medium' %}
+	  <span class="badge badge-pill badge-primary">Medium</span></td>
+	  {% elif task.priority == 'Low' %}
+	  <span class="badge badge-pill badge-warning">Low</span></td>
+	  {% else %}
+	  <span class="badge badge-pill badge-secondary">Very Low</span></td>
+	  {% endif %}
+  </dd>
+
+  <dt class="col-sm-3">Due date:</dt>
+  <dd class="col-sm-9">
+    {{ task.due_date }}
+  </dd>
+
+  
+  <dt class="col-sm-3">Charges</dt>
+  <dd class="col-sm-9">{{ task.charges }}/-</dd>
+</dl>
+<h5>Progress:</h5>
+<div class="progress">
+  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: {{ task.progress }}%">{{ task.progress }}%</div>
+</div>
+<br><br>
+    {% if request.user.isCA %}
+    <a href="{% url 'task.updateTask' task.id %}" class="btn btn-outline-primary">Edit</a>
+    {% endif %}
+    <a href="{% url 'task.updateTaskProgress' task.id %}" class="btn btn-outline-primary">Update Progress</a>
+    <a href="{% url 'task.deleteTask' task.id %}" class="btn btn-outline-danger">Delete</a>
+
+    <hr>
+    <br>
+  <div class="attachment">
+    <h4><u>Attachments:</u></h4>
+    <br>
+    <div class="container">
+      <table class="attachment_table table-striped container">
+        <tbody></tbody>
+      </table>
+    </div>
+    <br>
+    <form id="addAttachmentForm" action="" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="file" name="file" id="file">
+      <button class="btn btn-outline-primary" type="submit">Add attachment</button>
+    </form>
+  </div> 
+
+  <hr>
+  <br>
+  <div class="discussion" >
+    <h4><u>Discussion:</u></h4>
+    <br>
+    <div class="container discussion_box">
+    </div>
+    <form action="" id="CommentForm"> 
+      <input type="text" id="comment" placeholder="Add comment" style="width: 80%;" required>
+      <button class="btn btn-outline-primary" id="add_commit" type="submit" >Comment</button>
+    </form>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+  let task_id={{ task.id }}
+    $.ajax({
+      url: "/ajax/discussion/", 
+      type: "GET",
+      data:{ 'q':task_id
+              },
+      dataType: 'json',
+      success: function(result){
+        //console.log(result['discussion'])
+        let comments=JSON.parse(result['discussion'])
+        let senders=JSON.parse(result['senders'])
+        let created=result['created']
+        let data=''
+        for(var i=0;i< comments.length; i++){
+        data+= '<b> '+senders[i]['fields']['first_name']+' '+senders[i]['fields']['last_name']+'</b><div style="font-size: 15px">'+comments[i]['fields']['content']+'</div> <span class="small" style="margin-left: 65%"> '+created[i]+'</span><br><hr>'
+      }
+      $('.discussion_box').html(data)
+    }});
+
+
+    $.ajax({
+      url: "/ajax/getAttachment/", 
+      type: "GET",
+      data:{ 'q':task_id
+              },
+      dataType: 'json',
+      success: function(result){
+         let names=result['names'];
+         let attachment=JSON.parse(result['attachment'])
+         let data='';
+         for(var i=0;i< names.length; i++){
+         let url='/downloadAttachment/'+attachment[i]['pk']+'/';
+         console.log(url);
+         data+= '<tr><td><a href="'+url+'">'+names[i]+'</td></tr>';
+       }
+       $('.attachment_table').append(data)
+    }});
+
+
+
+
+$('#addAttachmentForm').on('submit', function(e) {
+    e.preventDefault();
+    e.stopPropagation(); // only neccessary if something above is listening to the (default-)event too
+    var fd = new FormData($(this)[0]);
+    fd.append('task_id',task_id);
+    $.ajax({
+      url: "/ajax/addAttachment/", 
+      type: "POST",
+      processData: false, contentType: false,
+      data:fd,
+      dataType: 'json',
+      success: function(result){
+        let url='/downloadAttachment/'+result['pk']+'/';
+        data='<tr><td><a href="'+url+'">'+result['name']+'</td></tr>';
+        $('.attachment_table').append(data)
+    }});
+});
+
+
+  $('#CommentForm').on('submit', function(e) {
+    e.preventDefault();
+    e.stopPropagation(); // only neccessary if something above is listening to the (default-)event too
+
+    let text=$('#comment').val() 
+    $.ajax({
+      url: "/ajax/addComment/", 
+      type: "POST",
+      data:{ "text": text, 
+              "sent_by":pk,
+              "task_id":taskId,
+              },
+      dataType: 'json',
+      success: function(result){
+        let data=$('.discussion_box').html()
+        data+='<b> '+result['first_name']+' '+result['last_name']+'</b><div style="font-size: 15px">'+text+'</div> <span class="small" style="margin-left: 65%"> '+result['created']+'</span><br><hr>'
+        $('.discussion_box').html(data)
+        $('#comment').val('')
+    }});
+});
+
+  
+
+{% endblock js %}

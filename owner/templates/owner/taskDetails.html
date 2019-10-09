@@ -17,21 +17,77 @@
 
 {% block content %}
 <div class="container">
-<div class="jumbotron">
+<dl class="row">
+  <dt class="col-sm-3">Service:</dt>
+  <dd class="col-sm-9"><a href="{% url 'owner.serviceDetails' task.service.pk %}">{{ task.service }}</a></dd>
+
+  <dt class="col-sm-3">For client:</dt>
+  <dd class="col-sm-9">
+    <a href="{% url 'owner.clientDetails' task.for_client.pk %}">{{ task.for_client }}</a>
+  </dd>
+
+  <dt class="col-sm-3">Assigned to:</dt>
+  <dd class="col-sm-9">
+    <a href="{% url 'owner.workerDetails' task.assigned_to.pk %}">{{ task.assigned_to }}</a>
+  </dd>
+
+  <dt class="col-sm-3">Created at: </dt>
+  <dd class="col-sm-9">
+    {{ task.created }}
+  </dd>  
+
+  <dt class="col-sm-3">Description: </dt>
+  <dd class="col-sm-9">
+    {{ task.description }}
+  </dd>
+
+  <dt class="col-sm-3">Priority:</dt>
+  <dd class="col-sm-9">
+      {% if task.priority == 'Immediate' %}
+	  <span class="badge badge-pill badge-danger">Immediate</span></td>
+	  {% elif task.priority == 'High' %}
+	  <span class="badge badge-pill badge-success">High</span></td>
+	  {% elif task.priority == 'Medium' %}
+	  <span class="badge badge-pill badge-primary">Medium</span></td>
+	  {% elif task.priority == 'Low' %}
+	  <span class="badge badge-pill badge-warning">Low</span></td>
+	  {% else %}
+	  <span class="badge badge-pill badge-secondary">Very Low</span></td>
+	  {% endif %}
+  </dd>
+
+  <dt class="col-sm-3">Due date:</dt>
+  <dd class="col-sm-9">
+    {{ task.due_date }}
+  </dd>
+
   
+  <dt class="col-sm-3">Charges</dt>
+  <dd class="col-sm-9">{{ task.charges }}/-</dd>
+</dl>
+<h5>Progress:</h5>
+<div class="progress">
+  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: {{ task.progress }}%">{{ task.progress }}%</div>
+</div>
+<br><br>
 
-   	<b>Service :</b> <p>{{ task.service }}</p>
-    <h5>For client : </h5> <p class="lead">{{ task.for_client }}</p>
-    <h5>Assigned to : </h5> <p class="lead">{{ task.assigned_to }}</p>
-    <h5>Priority : </h5> <p class="lead">{{ task.priority }}</p>
-    <h5>Description : </h5> <p class="lead">{{ task.description }}</p>
-    <h5>Progress : </h5> <p class="lead">{{ task.progress }}</p>
-    
-    <h5>Charges : </h5> <p class="lead">{{ task.charges }}</p>
-
-    <a href="#" class="btn btn-outline-primary">Edit</a>
+    <a href="{% url 'owner.updateTask' task.id %}" class="btn btn-outline-primary">Edit</a>
+    <a href="{% url 'owner.updateTaskProgress' task.id %}" class="btn btn-outline-primary">Update Progress</a>
     <a href="{% url 'owner.deleteTask' task.id %}" class="btn btn-outline-danger">Delete</a>
-  
+
+<hr>
+<br>
+<h4><u>Discussion:</u></h4>
+<br>
+<div class="container">
+  <b>Ankit Sherkar</b>
+  <p style="font-size: 15px">500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lore</p>
+  <span class="small" style="margin-left: 65%">Oct. 2, 2019, 3:34 p.m.</span>
+  <hr>
+  <b>Ankit Sherkar</b>
+  <p style="font-size: 15px">500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lore</p>
+  <span class="small" style="margin-left: 65%">Oct. 2, 2019, 3:34 p.m.</span>
+  <hr>
 </div>
-</div>
+
 {% endblock content %}

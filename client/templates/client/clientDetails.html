@@ -1,0 +1,37 @@
+{% extends 'owner/CAbase.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+ Client Details
+{% endblock title %}
+
+{% block sidebar %}
+{% if request.user.isCA %}
+{% include 'owner/CAsidebar.html' %}
+{% else %}
+{% include 'worker/workerSidebar.html' %}
+{% endif %}
+{% endblock sidebar %}
+
+{% block header %}
+<h2 style="margin: 5px">Client's Details</h2>
+{% endblock header %}
+
+{% block content %}
+<div class="container">
+<div class="jumbotron">
+
+   	<h5>Name :</h5> <p class="lead">{{ client.first_name }} {{ client.middle_name }} {{ client.last_name }}</p>
+    <h5>Phone : </h5> <p class="lead">{{ client.phone_number }}</p>
+    <h5>Email : </h5> <p class="lead">{{ client.email }}</p>
+    <h5>Birthdate : </h5> <p class="lead">{{ client.birthdate }}</p>
+    <h5>Address : </h5> <p class="lead">{{ client.address }}</p>
+    <h5>Aadhar card number : </h5> <p class="lead">{{ client.aadhar_number }}</p>
+    <h5>Pan card number : </h5> <p class="lead">{{ client.pan_number }}</p>
+
+    <a href="{% url 'client.updateClient' client.id %}" class="btn btn-outline-primary">Edit</a>
+    <a href="{% url 'task.servicesTaken' client.id %}" class="btn btn-outline-primary">Services taken</a>
+    <a href="{% url 'owner.deleteClient' client.id %}" class="btn btn-outline-danger">Delete</a>
+  
+</div>
+</div>
+{% endblock content %}

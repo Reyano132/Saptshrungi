@@ -1,0 +1,31 @@
+{% extends 'owner/CAbase.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+ Register Client
+{% endblock title %}
+
+
+{% block sidebar %}
+{% if request.user.isCA %}
+{% include 'owner/CAsidebar.html' %}
+{% else %}
+{% include 'worker/workerSidebar.html' %}
+{% endif %}
+{% endblock sidebar %}
+
+{% block content %}
+<div class="content-section">
+	<form method="POST">
+		{% csrf_token %}
+		<fieldset class="form-group">
+			<legend class="border-bottom mb-4">Register new Client</legend>
+			{{ form|crispy }}
+		</fieldset>
+		<div class="form-group">
+			<button class="btn btn-outline-info" type="submit">Register</button>
+		</div>
+	</form>
+		
+	
+</div>
+{% endblock content %}

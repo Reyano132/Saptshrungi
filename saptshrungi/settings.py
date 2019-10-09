@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'channels',
+    'attachment.apps.AttachmentConfig',
+    'discussion.apps.DiscussionConfig',
     'task.apps.TaskConfig',
     'service.apps.ServiceConfig',
     'client.apps.ClientConfig',
@@ -149,3 +151,8 @@ CHANNEL_LAYERS = {
         "CONFIG": {"hosts": [("localhost", 6379)]},
     }
 }
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, os.path.join('attachment','files'))
+
+MEDIA_URL = '/files/'

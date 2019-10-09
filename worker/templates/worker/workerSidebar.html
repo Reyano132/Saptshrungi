@@ -8,14 +8,14 @@
         
 
            <li>
-                <a href="{% url 'owner.clientsList' %}">Clients</a>
+                <a href="{% url 'client.clientsList' %}">Clients</a>
             </li>
 
             <li>
-                <a href="{% url 'owner.servicesList' %}">Services</a>
+                <a href="{% url 'service.servicesList' %}">Services</a>
             </li>
             <li>
-                <a href="{% url 'owner.assignedTaskList' request.user.id %}">Task  <span class="badge badge-light badge-pill" id="notification"></span></a>
+                <a href="{% url 'task.assignedTaskList' request.user.id %}">Task  <span class="badge badge-light badge-pill" id="notification"></span></a>
             </li>
 
         </ul>

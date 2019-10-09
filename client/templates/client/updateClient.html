@@ -1,0 +1,34 @@
+{% extends 'owner/CAbase.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+ Update Client's details
+{% endblock title %}
+
+{% block sidebar %}
+{% if request.user.isCA %}
+{% include 'owner/CAsidebar.html' %}
+{% else %}
+{% include 'worker/workerSidebar.html' %}
+{% endif %}
+{% endblock sidebar %}
+
+
+{% block header %}
+<h2 style="margin: 5px">Update Details</h2>
+{% endblock header %}
+
+{% block content %}
+<div class="content-section">
+	<form method="POST">
+		{% csrf_token %}
+		<fieldset class="form-group">
+			{{ form|crispy }}
+		</fieldset>
+		<div class="form-group">
+			<button class="btn btn-outline-info" type="submit">Update</button>
+		</div>
+	</form>
+		
+	
+</div>
+{% endblock content %}

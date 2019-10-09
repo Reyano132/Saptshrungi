@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.forms import UserCreationForm
-from .forms import WorkerRegisterForm,ClientRegisterForm,AddServiceForm,CreateTaskForm,AssignTaskForm
+from .forms import WorkerRegisterForm,ClientRegisterForm,AddServiceForm,CreateTaskForm,AssignTaskForm,UpdateProgress
 from django.contrib.auth.decorators import login_required
 from saptshrungi.decorators import ca_required
 from django.contrib.auth.views import LoginView
@@ -231,6 +231,15 @@ class TaskCreated(generic.ListView):
 	def get_queryset(self):
 		return Task.objects.filter(service=Service.objects.get(pk=self.kwargs['pk']))
 
+class UpdateTask(generic.UpdateView):
+	model=Task
+	template_name='owner/updateTask.html'	
+	form_class=CreateTaskForm	
+
+class UpdateTaskProgress(generic.UpdateView):
+	model=Task
+	template_name='owner/UpdateTaskProgress.html'	
+	form_class=UpdateProgress	
 '''
 def storeLastSeen(request):
 	if request.is_ajax():
@@ -252,7 +261,7 @@ class GetNotification(generic.View):
 		if int(q)==self.request.user.pk:
 			user=User.objects.get(pk=q)
 			print(user.last_seen)
-			task_data=Task.objects.filter(assigned_to=User.objects.get(pk=q),modified__gte=user.last_seen)
+			task_data=Task.objects.filter(assigned_to=User.objects.get(pk=q),created__gte=user.last_seen)
 			lenght=len(task_data)
 			print(lenght)
 

@@ -7,27 +7,27 @@
             <p><a href="{% url 'owner.home' %}">CA Dashboard</a></p>
 
             <li>
-                <a href="{% url 'owner.workersList' %}">Employees</a>
+                <a href="{% url 'worker.workersList' %}">Employees</a>
             </li>
 
             <li>
-                <a href="{% url 'owner.clientsList' %}">Clients</a>
+                <a href="{% url 'client.clientsList' %}">Clients</a>
             </li>
 
             <li>
-                <a href="{% url 'owner.servicesList' %}">Services</a>
+                <a href="{% url 'service.servicesList' %}">Services</a>
             </li>
             <li>
                 <a href="#taskSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Task</a>
                 <ul class="collapse list-unstyled" id="taskSubmenu">
                     <li>
-                        <a href="{% url 'owner.assignedTaskList' request.user.id %}">Task assigned to me  <span class="badge badge-light badge-pill" id="notification"></span></a>
+                        <a href="{% url 'task.assignedTaskList' request.user.id %}">Task assigned to me  <span class="badge badge-light badge-pill" id="notification"></span></a>
                     </li>
                     <li>
-                        <a href="{% url 'owner.tasksList' %}">All tasks</a>
+                        <a href="{% url 'task.tasksList' %}">All tasks</a>
                     </li>
                     <li>
-                        <a href="{% url 'owner.createTask' %}">Create new task</a>
+                        <a href="{% url 'task.createTask' %}">Create new task</a>
                     </li>
                 </ul>
 
