@@ -354,8 +354,11 @@
             
                 if(action.event == "New Task" && pk == action.pk ) {
                 temp=parseInt($('#notification').html())+1
-                console.log(temp)
+                if ($.isNumeric(temp)){  
                   $('#notification').html(temp)
+                }else{
+                    $('#notification').html(1)   
+                }
                 }
               })
             document.ws = webSocketBridge; /* for debugging */

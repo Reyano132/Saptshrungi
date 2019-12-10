@@ -5,7 +5,8 @@ from django.views import generic
 from django.urls import reverse_lazy
 from user.models import User
 from django.utils import timezone
-
+from client.models import Client
+from service.models import Service
 
 def createTask(request):
 	if request.method=='POST':
@@ -24,14 +25,16 @@ class TaskDetails(generic.DetailView):
 class TasksList(generic.ListView):
 	template_name='task/tasksList.html'
 	context_object_name="tasks"
-	paginate_by = 10
+	#paginate_by = 10
 
 	def get_queryset(self):
-		return Task.objects.all()
+		return Task.objects.all().order_by('-created')
+
 
 class DeleteTask(generic.DeleteView):
 	model=Task
-	success_url = reverse_lazy('task.tasksList')
+	def get_success_url(self):
+		return reverse_lazy('task.tasksList')
 
 def assignTaskToWorker(request,pk):
 	if request.method=='POST':
@@ -55,7 +58,8 @@ class AssignedTasksList(generic.ListView):
 			user.last_seen=timezone.now()
 			user.save()
 		
-		return Task.objects.filter(assigned_to=User.objects.get(pk=self.kwargs['pk']))
+		return Task.objects.filter(assigned_to=User.objects.get(pk=self.kwargs['pk'])).order_by('-created')
+
 
 class TaskCreated(generic.ListView):
 	template_name='task/tasksList.html'

@@ -74,11 +74,11 @@
   <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: {{ task.progress }}%">{{ task.progress }}%</div>
 </div>
 <br><br>
+    <a href="{% url 'task.updateTaskProgress' task.id %}" class="btn btn-outline-primary">Update Progress</a>
     {% if request.user.isCA %}
     <a href="{% url 'task.updateTask' task.id %}" class="btn btn-outline-primary">Edit</a>
-    {% endif %}
-    <a href="{% url 'task.updateTaskProgress' task.id %}" class="btn btn-outline-primary">Update Progress</a>
     <a href="{% url 'task.deleteTask' task.id %}" class="btn btn-outline-danger">Delete</a>
+    {% endif %}
 
     <hr>
     <br>
@@ -185,7 +185,7 @@ $('#addAttachmentForm').on('submit', function(e) {
       type: "POST",
       data:{ "text": text, 
               "sent_by":pk,
-              "task_id":taskId,
+              "task_id":task_id,
               },
       dataType: 'json',
       success: function(result){
