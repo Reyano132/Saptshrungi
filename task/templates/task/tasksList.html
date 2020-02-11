@@ -23,6 +23,12 @@
 
 
 <div class="container">
+  <div class="container float-right">
+    <a href="{% url 'task.tasksList' %}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">All Tasks</a>
+    <a href="{% url 'task.pendingTasksList' %}" class="btn btn-primary btn-sm" role="button" aria-pressed="true">Pending</a>
+    <a href="{% url 'task.completedTasksList' %}" class="btn btn-primary btn-sm" role="button" aria-pressed="true">Completed</a>
+  </div>
+  <br><br>
   <table class="table table-sm table-hover">
     <thead class="thead-dark">
       <th scope="col">Created On</th>

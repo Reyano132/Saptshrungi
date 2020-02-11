@@ -20,6 +20,18 @@
 {% endblock header %}
 
 {% block content %}
+{% if messages %}
+<div class="alert alert-success alert-dismissible">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+</div>
+
+{% endif %}
+
 <div class="container">
 <dl class="row">
   <dt class="col-sm-3">Service:</dt>
@@ -47,7 +59,7 @@
 
   <dt class="col-sm-3">Priority:</dt>
   <dd class="col-sm-9">
-      {% if task.priority == 'Immediate' %}
+    {% if task.priority == 'Immediate' %}
 	  <span class="badge badge-pill badge-danger">Immediate</span></td>
 	  {% elif task.priority == 'High' %}
 	  <span class="badge badge-pill badge-success">High</span></td>
@@ -78,6 +90,14 @@
     {% if request.user.isCA %}
     <a href="{% url 'task.updateTask' task.id %}" class="btn btn-outline-primary">Edit</a>
     <a href="{% url 'task.deleteTask' task.id %}" class="btn btn-outline-danger">Delete</a>
+    <a href="{% url 'payment.CreatePayment' task.id %}" class="btn btn-outline-primary">Payment</a>
+    {% if task.progress == 100 %}
+    <a href="{% url 'sendEmail.sendmail' task.for_client.pk task.pk %}" class="btn btn-outline-success">Notify</a>
+    {% else %}
+    <a href="#" class="btn btn-outline-secondary disabled" role="button" aria-disabled="true">Notify</a>
+    
+    {% endif %}
+    
     {% endif %}
 
     <hr>

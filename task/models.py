@@ -18,6 +18,7 @@ class Task(models.Model):
 	created=models.DateTimeField(timezone.now(),null=True)
 	modified= models.DateTimeField(timezone.now(),null=True,blank=True)
 	charges=models.IntegerField(null=True,blank=True)
+	isCompleted=models.BooleanField(default=False)
 
 	def  __str__(self):
 		return self.service.name

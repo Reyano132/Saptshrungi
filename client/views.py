@@ -12,7 +12,7 @@ def registerClient(request):
 		form=ClientRegisterForm(request.POST)
 		if form.is_valid():
 			client=form.save()
-			return redirect('owner.clientDetails',pk=client.pk)
+			return redirect('client.clientDetails',pk=client.pk)
 	else:
 		form=ClientRegisterForm()
 	return render(request,'client/registerClient.html',{'form':form})

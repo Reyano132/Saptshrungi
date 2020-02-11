@@ -7,7 +7,14 @@
 {% include 'worker/workerSidebar.html' %}
 {% endblock sidebar %}
 
+
 {% block content %}
+  {% for task in tasks %}
+  <div class="alert alert-danger" role="alert">
+    <a href="{% url 'owner.taskDetails' task.id %}">Warning: Pending Task - {{ task.service }} for {{ task.for_client }}</a>
+  </div>
+{% endfor %}    
+
 
 <div class="jumbotron">
     <h4>Name : </h4> <p class="lead">{{ request.user.first_name }} {{ request.user.last_name }}</p>

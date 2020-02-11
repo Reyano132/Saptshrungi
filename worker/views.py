@@ -5,11 +5,22 @@ from .forms import WorkerRegisterForm
 from user.models import User
 from django.views import generic
 from django.urls import reverse_lazy
+from task.models import Task
+import datetime
 
 @login_required
 @worker_required
 def home(request):
 	return render(request,'worker/home.html')
+
+
+class Profile(generic.ListView):
+	template_name='worker/home.html'
+	context_object_name="tasks"
+
+	def get_queryset(self):
+
+		return Task.objects.filter(due_date__startswith=datetime.date.today()+datetime.timedelta(days=1)).order_by('-created')
 
 def registerWorker(request):
 	if request.method=='POST':

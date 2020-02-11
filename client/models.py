@@ -16,5 +16,5 @@ class Client(models.Model):
 		return reverse('owner.clientDetails',kwargs={'pk':self.pk})
 
 	def __str__(self):
-		return self.first_name+" "+self.middle_name+" "+self.last_name
+		return self.first_name+" "+self.last_name
 

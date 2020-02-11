@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'owner.apps.OwnerConfig',
     'worker.apps.WorkerConfig',
+    'sendEmail.apps.SendemailConfig',
+    'payment.apps.PaymentConfig',
+    'report.apps.ReportConfig',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -64,7 +67,7 @@ ROOT_URLCONF = 'saptshrungi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -156,3 +159,10 @@ CHANNEL_LAYERS = {
 MEDIA_ROOT = os.path.join(BASE_DIR, os.path.join('attachment','files'))
 
 MEDIA_URL = '/files/'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'dummycs09@gmail.com'
+EMAIL_HOST_PASSWORD = 'accountcs09'
+EMAIL_USE_SSL = False
+EMAIL_USE_TLS = True

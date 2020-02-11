@@ -1,0 +1,69 @@
+{% extends 'owner/CAbase.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}
+ Tasks
+{% endblock title %}
+
+
+{% block sidebar %}
+{% if request.user.isCA %}
+{% include 'owner/CAsidebar.html' %}
+{% else %}
+{% include 'worker/workerSidebar.html' %}
+{% endif %}
+{% endblock sidebar %}
+
+{% block header %}
+<h2 style="margin: 5px">Tasks</h2>
+{% endblock header %}
+
+
+{% block content %}
+
+
+<div class="container">
+  <div class="container float-right">
+    <a href="{% url 'task.tasksList' %}" class="btn btn-primary btn-sm" role="button" aria-pressed="true">All Tasks</a>
+    <a href="{% url 'task.pendingTasksList' %}" class="btn btn-primary btn-sm" role="button" aria-pressed="true">Pending</a>
+    <a href="{% url 'task.completedTasksList' %}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Completed</a>
+  </div>
+  <br><br>
+  <table class="table table-sm table-hover">
+    <thead class="thead-dark">
+      <th scope="col">Created On</th>
+      <th scope="col">Task</th>
+      <th scope="col">Assigned To</th>
+      <th scope="col">Priority</th>
+      <th scope="col">Due date</th>
+      <th scope="col">Progress</th>
+    </thead>
+    <tbody>
+      {% for task in tasks %}
+      <a href="{% url 'owner.taskDetails' task.id %}">
+      <tr>
+        <td scope="row"><a href="{% url 'owner.taskDetails' task.id %}">{{ task.created }}</a></td>
+        <td><a href="{% url 'owner.taskDetails' task.id %}">{{ task.service }}</a></td>
+        <td><a href="{% url 'owner.taskDetails' task.id %}">{{ task.assigned_to }}</a></td>
+        <td>
+          {% if task.priority == 'Immediate' %}
+          <span class="badge badge-pill badge-danger">Immediate</span></td>
+          {% elif task.priority == 'High' %}
+          <span class="badge badge-pill badge-success">High</span></td>
+          {% elif task.priority == 'Medium' %}
+          <span class="badge badge-pill badge-primary">Medium</span></td>
+          {% elif task.priority == 'Low' %}
+          <span class="badge badge-pill badge-warning">Low</span></td>
+          {% else %}
+          <span class="badge badge-pill badge-secondary">Very Low</span></td>
+          {% endif %}
+        <td><a href="{% url 'owner.taskDetails' task.id %}">{{ task.due_date }}</a></td>
+        <td><a href="{% url 'owner.taskDetails' task.id %}">{{ task.progress }}</a></td>
+      </tr> 
+      
+      {% endfor %}     
+    </tbody>
+  </table>
+</div>
+
+{% endblock content %}

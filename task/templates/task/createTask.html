@@ -13,7 +13,7 @@
 {% endblock sidebar %}
 
 {% block content %}
-{% if reuest.user.isCA %}
+{% if request.user.isCA %}
 <div class="content-section">
 	<form method="POST">
 		{% csrf_token %}

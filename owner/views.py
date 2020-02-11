@@ -15,13 +15,23 @@ from django.urls import reverse_lazy
 from task.models import Task
 from django.views.decorators.csrf import csrf_protect
 from django.utils import timezone
+import datetime
 
 
 
 @login_required
 @ca_required
 def home(request):
+	print("fgddfg",datetime.date.today()+datetime.timedelta(days=1))
 	return render(request, 'owner/home.html' )
+
+class Home(generic.ListView):
+	template_name='owner/home.html'
+	context_object_name="tasks"
+
+	def get_queryset(self):
+
+		return Task.objects.filter(isCompleted=True).order_by('-created')
 
 @login_required
 def redirect_page(request):

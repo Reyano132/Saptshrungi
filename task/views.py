@@ -30,6 +30,22 @@ class TasksList(generic.ListView):
 	def get_queryset(self):
 		return Task.objects.all().order_by('-created')
 
+class PendingTaskList(generic.ListView):
+	template_name='task/pendingtasksList.html'
+	context_object_name="tasks"
+	#paginate_by = 10
+
+	def get_queryset(self):
+		return Task.objects.filter(isCompleted=False).order_by('-created')
+
+class CompletedTaskList(generic.ListView):
+	template_name='task/completedtasksList.html'
+	context_object_name="tasks"
+	#paginate_by = 10
+
+	def get_queryset(self):
+		return Task.objects.filter(isCompleted=True).order_by('-created')
+
 
 class DeleteTask(generic.DeleteView):
 	model=Task
