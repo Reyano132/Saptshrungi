@@ -7,13 +7,13 @@
 {% include 'worker/workerSidebar.html' %}
 {% endblock sidebar %}
 
+{% block header %}
+<h2 style="margin: 5px">Profile</h2>
+{% endblock header %}
 
 {% block content %}
-  {% for task in tasks %}
-  <div class="alert alert-danger" role="alert">
-    <a href="{% url 'owner.taskDetails' task.id %}">Warning: Pending Task - {{ task.service }} for {{ task.for_client }}</a>
-  </div>
-{% endfor %}    
+<table id="notificationTableForDue"></table>
+<table id="notificationTableForAhead"></table> 
 
 
 <div class="jumbotron">
@@ -25,5 +25,47 @@
 </div>
 
 {% endblock content %}
+
+
+{% block js %}
+$.ajax({
+  url: "/worker/ajax/getNotificationADayAhead/", 
+  dataType: 'json',
+  success: function(result){
+    let tasks=result['tasks']
+    for(let i=0 ;i< tasks.length; i++){
+      let id=tasks[i]['pk']
+      let url="/taskDetails/"+id+"/";
+      let data='<tr><td><div class="alert alert-warning" role="alert"><a href="'+url+'">Warning: Pending Task - '
+      +tasks[i]['service']+' for '+tasks[i]['client']+
+      '</a></div></td></tr>';
+      $('#notificationTableForAhead').append(data);
+
+    }	
+}});
+
+$.ajax({
+  url: "/worker/ajax/getNotificationOnDueDay/", 
+  dataType: 'json',
+  success: function(result){
+    let tasks=result['tasks']
+    console.log(tasks)
+    for(let i=0 ;i< tasks.length; i++){
+      
+      let id=tasks[i]['pk']
+      let url="/taskDetails/"+id+"/";
+      let data='<tr><td><div class="alert alert-danger" role="alert"><a href="'+url+'">Warning: Pending Task due on today - '
+      +tasks[i]['service']+' for '+tasks[i]['client']+
+      '</a></div></td></tr>';
+      $('#notificationTableForDue').append(data);
+
+    }	
+}});
+
+
+
+{% endblock js %}
+
+            
 
             

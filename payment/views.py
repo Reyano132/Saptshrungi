@@ -42,7 +42,7 @@ class PaymentDetails(generic.DetailView):
 class GeneratePdf(View):
 	def get(self, request,pk, *args, **kwargs):
 		template=get_template('payment/invoice.html')
-	
+		p=PaymentData.objects.get(pk=pk)
 		data = {
 			'today': 'monday', 
 			'amount': '200',

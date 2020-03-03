@@ -166,3 +166,4 @@ EMAIL_HOST_USER = 'dummycs09@gmail.com'
 EMAIL_HOST_PASSWORD = 'accountcs09'
 EMAIL_USE_SSL = False
 EMAIL_USE_TLS = True
+

@@ -34,4 +34,7 @@ urlpatterns = [
     path('taskDetails/<int:pk>/update',views.UpdateTask.as_view(), name='owner.updateTask'),
     path('taskDetails/<int:pk>/updateProgress',views.UpdateTaskProgress.as_view(), name='owner.updateTaskProgress'),
     path('tasksList/',views.TasksList.as_view(), name='owner.tasksList'),
+    path('ajax/getNotificationADayAhead/',views.getNotificationADayAhead.as_view()),
+    path('ajax/getNotificationOnDueDay/',views.getNotificationOnDueDay.as_view()),
+    path('ajax/getNotificationPassedDueDay/',views.getNotificationPassedDueDay.as_view()),
 ]

@@ -7,20 +7,48 @@ from django.views import generic
 from django.urls import reverse_lazy
 from task.models import Task
 import datetime
+from django.http import JsonResponse
 
 @login_required
 @worker_required
 def home(request):
 	return render(request,'worker/home.html')
 
+class getNotificationADayAhead(generic.View):
+	def get(self,request):
+		pk=self.request.user.pk
+		tasks=list(Task.objects.filter(due_date__startswith=datetime.date.today()+datetime.timedelta(days=1), assigned_to=pk, isCompleted=False).order_by('-created'))
+		#tasks=serializers.serialize("json", task_data,fields=('pk','service','for_client','assigned_to'))
+		tmp=[]
+		for task in tasks:
+			service=task.service.name
+			client=task.for_client.first_name+' '+task.for_client.middle_name+' '+task.for_client.last_name
+			emp=task.assigned_to.first_name+' '+task.assigned_to.last_name
+			tmp.append({'pk':task.pk,'client':client,'service':service,'emp':emp})
+		data={'tasks':tmp}
+		return JsonResponse(data)
+
+class getNotificationOnDueDay(generic.View):
+	def get(self,request):
+		pk=self.request.user.pk
+		tasks=list(Task.objects.filter(due_date__startswith=datetime.date.today(),assigned_to=pk, isCompleted=False).order_by('-created'))
+		#tasks=serializers.serialize("json", task_data,fields=('pk','service','for_client','assigned_to'))
+		tmp=[]
+		for task in tasks:
+			service=task.service.name
+			client=task.for_client.first_name+' '+task.for_client.middle_name+' '+task.for_client.last_name
+			emp=task.assigned_to.first_name+' '+task.assigned_to.last_name
+			tmp.append({'pk':task.pk,'client':client,'service':service,'emp':emp})
+		data={'tasks':tmp}
+		return JsonResponse(data)
 
 class Profile(generic.ListView):
 	template_name='worker/home.html'
 	context_object_name="tasks"
 
 	def get_queryset(self):
-
-		return Task.objects.filter(due_date__startswith=datetime.date.today()+datetime.timedelta(days=1)).order_by('-created')
+		pk=self.request.user.pk
+		return Task.objects.filter(due_date__startswith=datetime.date.today()+datetime.timedelta(days=1) , assigned_to=pk, isCompleted=False).order_by('-created')
 
 def registerWorker(request):
 	if request.method=='POST':

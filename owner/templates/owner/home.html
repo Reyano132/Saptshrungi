@@ -13,21 +13,79 @@
 {% endblock header %}
 
 {% block content %}
-<div class="alert alert-primary" role="alert">
-    A simple primary alert—check it out!
-  </div>
-  <div class="alert alert-secondary" role="alert">
-    A simple secondary alert—check it out!
-  </div>
 
-<div class="jumbotron">
-    <h4>Name : </h4> <p class="lead">{{ request.user.first_name }} {{ request.user.last_name }}</p>
-    <h5>Phone : </h5> <p class="lead">{{ request.user.phone_number }}</p>
-    <h5>email : </h5> <p class="lead">{{ request.user.email }}</p>
-    <h5>birthdate : </h5> <p class="lead">{{ request.user.birthdate }}</p>
-
-</div>
+  <div class="d-inline-flex">
+    <div class="jumbotron p-5">
+        <h4>Name : </h4> <p class="lead">{{ request.user.first_name }} {{ request.user.last_name }}</p>
+        <h5>Phone : </h5> <p class="lead">{{ request.user.phone_number }}</p>
+        <h5>email : </h5> <p class="lead">{{ request.user.email }}</p>
+        <h5>birthdate : </h5> <p class="lead">{{ request.user.birthdate }}</p>
+    </div>
+    <div class="p-3">
+      <table id="notificationTableForDue"></table>
+      <table id="notificationTableForAhead"></table>
+      <table id="notificationTableForPassed"></table>
+    </div>
+  </div>
 
 {% endblock content %}
+
+
+{% block js %}
+$.ajax({
+  url: "/ajax/getNotificationADayAhead/", 
+  dataType: 'json',
+  success: function(result){
+    let tasks=result['tasks']
+    for(let i=0 ;i< tasks.length; i++){
+      
+      let id=tasks[i]['pk']
+      let url="/taskDetails/"+id+"/";
+      let data='<tr><td><div class="alert alert-warning" role="alert"><a href="'+url+'">Warning: Pending Task - '
+      +tasks[i]['service']+' for '+tasks[i]['client']+', Assigened to : '+tasks[i]['emp']+
+      '</a></div></td></tr>';
+      $('#notificationTableForAhead').append(data);
+
+    }	
+}});
+
+$.ajax({
+  url: "/ajax/getNotificationOnDueDay/", 
+  dataType: 'json',
+  success: function(result){
+    let tasks=result['tasks']
+    console.log(tasks)
+    for(let i=0 ;i< tasks.length; i++){
+      
+      let id=tasks[i]['pk']
+      let url="/taskDetails/"+id+"/";
+      let data='<tr><td><div class="alert alert-danger" role="alert"><a href="'+url+'">Warning: Pending Task due on today - '
+      +tasks[i]['service']+' for '+tasks[i]['client']+', Assigened to : '+tasks[i]['emp']+
+      '</a></div></td></tr>';
+      $('#notificationTableForDue').append(data);
+
+    }	
+}});
+
+
+$.ajax({
+  url: "/ajax/getNotificationPassedDueDay/", 
+  dataType: 'json',
+  success: function(result){
+    let tasks=result['tasks']
+    console.log(tasks)
+    for(let i=0 ;i< tasks.length; i++){
+      
+      let id=tasks[i]['pk']
+      let url="/taskDetails/"+id+"/";
+      let data='<tr><td><div class="alert alert-dark" role="alert"><a href="'+url+'">Warning: Task not completed - '
+      +tasks[i]['service']+' for '+tasks[i]['client']+', Assigened to : '+tasks[i]['emp']+
+      '</a></div></td></tr>';
+      $('#notificationTableForPassed').append(data);
+
+    }	
+}});
+
+{% endblock js %}
 
             

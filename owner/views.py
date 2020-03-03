@@ -22,16 +22,47 @@ import datetime
 @login_required
 @ca_required
 def home(request):
-	print("fgddfg",datetime.date.today()+datetime.timedelta(days=1))
 	return render(request, 'owner/home.html' )
 
-class Home(generic.ListView):
-	template_name='owner/home.html'
-	context_object_name="tasks"
+class getNotificationADayAhead(generic.View):
+	def get(self,request):
+		tasks=list(Task.objects.filter(due_date__startswith=datetime.date.today()+datetime.timedelta(days=1), isCompleted=False).order_by('-created'))
+		#tasks=serializers.serialize("json", task_data,fields=('pk','service','for_client','assigned_to'))
+		tmp=[]
+		for task in tasks:
+			service=task.service.name
+			client=task.for_client.first_name+' '+task.for_client.middle_name+' '+task.for_client.last_name
+			emp=task.assigned_to.first_name+' '+task.assigned_to.last_name
+			tmp.append({'pk':task.pk,'client':client,'service':service,'emp':emp})
+		data={'tasks':tmp}
+		return JsonResponse(data)
 
-	def get_queryset(self):
+class getNotificationOnDueDay(generic.View):
+	def get(self,request):
+		tasks=list(Task.objects.filter(due_date__startswith=datetime.date.today(), isCompleted=False).order_by('-created'))
+		#tasks=serializers.serialize("json", task_data,fields=('pk','service','for_client','assigned_to'))
+		tmp=[]
+		for task in tasks:
+			service=task.service.name
+			client=task.for_client.first_name+' '+task.for_client.middle_name+' '+task.for_client.last_name
+			emp=task.assigned_to.first_name+' '+task.assigned_to.last_name
+			tmp.append({'pk':task.pk,'client':client,'service':service,'emp':emp})
+		data={'tasks':tmp}
+		return JsonResponse(data)
 
-		return Task.objects.filter(isCompleted=True).order_by('-created')
+class getNotificationPassedDueDay(generic.View):
+	def get(self,request):
+		tasks=list(Task.objects.filter(due_date__lt=datetime.date.today(), isCompleted=False).order_by('-created'))
+		#tasks=serializers.serialize("json", task_data,fields=('pk','service','for_client','assigned_to'))
+		print(tasks)
+		tmp=[]
+		for task in tasks:
+			service=task.service.name
+			client=task.for_client.first_name+' '+task.for_client.middle_name+' '+task.for_client.last_name
+			emp=task.assigned_to.first_name+' '+task.assigned_to.last_name
+			tmp.append({'pk':task.pk,'client':client,'service':service,'emp':emp})
+		data={'tasks':tmp}
+		return JsonResponse(data)
 
 @login_required
 def redirect_page(request):
