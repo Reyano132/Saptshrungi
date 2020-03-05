@@ -1,0 +1,25 @@
+{% extends 'owner/CAbase.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+ Report
+{% endblock title %}
+
+
+{% block sidebar %}
+{% include 'owner/CAsidebar.html' %}
+{% endblock sidebar %}
+
+{% block header %}
+<h2 style="margin: 5px">Report</h2>
+{% endblock header %}
+
+{% block content %}
+<div class="container">
+    <form>
+        <h4>Duration:</h4>
+        <h4>From:</h4><input type="date" name="from_date" id="from_date">
+        <h4>To:</h4><input type="date" name="to_date" id="to_date">
+        
+    </form>
+</div>
+{% endblock content %}
