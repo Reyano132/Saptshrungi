@@ -30,6 +30,7 @@
 
     <a href="{% url 'client.updateClient' client.id %}" class="btn btn-outline-primary">Edit</a>
     <a href="{% url 'task.servicesTaken' client.id %}" class="btn btn-outline-primary">Services taken</a>
+    <a href="{% url 'payment.PaymentsForClient' client.id %}" class="btn btn-outline-primary">Payment Details</a>
     <a href="{% url 'owner.deleteClient' client.id %}" class="btn btn-outline-danger">Delete</a>
   
 </div>

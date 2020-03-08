@@ -29,6 +29,7 @@ urlpatterns = [
     path('',include('sendEmail.urls')),
     path('',include('payment.urls')),
     path('',include('report.urls')),
+    path('',include('gstClient.urls')),
     path('', include('owner.urls'),name='login'),
     path('', auth_views.LoginView.as_view(template_name='user/login.html'),name="login"),
     path('logout/', auth_views.LogoutView.as_view(next_page='/'),name="logout"),

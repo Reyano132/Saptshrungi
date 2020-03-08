@@ -90,7 +90,7 @@
     {% if request.user.isCA %}
     <a href="{% url 'task.updateTask' task.id %}" class="btn btn-outline-primary">Edit</a>
     <a href="{% url 'task.deleteTask' task.id %}" class="btn btn-outline-danger">Delete</a>
-    <a href="{% url 'payment.CreatePayment' task.id %}" class="btn btn-outline-primary">Payment</a>
+    <a href="{% url 'payment.PaymentsForTask' task.id %}" class="btn btn-outline-primary">Payment Details</a>
     {% if task.progress == 100 %}
     <a href="{% url 'sendEmail.sendmail' task.for_client.pk task.pk %}" class="btn btn-outline-success">Notify</a>
     {% else %}

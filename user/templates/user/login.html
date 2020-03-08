@@ -5,7 +5,31 @@ Login
 {% endblock title %}
 
 {% block content %}
-<div class="mx-auto d-flex justify-content-center">
+<div class="container h-100 ">
+	<div class="row justify-content-center align-items-center mx-auto">
+        <div class="col-md-12 col-lg-6  text-center ">
+          <h2 style="font-size:X vw; font-family: 'Ultra', serif; color: white;text-shadow: 2px 2px 4px #000000">
+            <span class="align-center">Saptashrungi</span>
+		  </h2>
+		  <h2 style="font-size:X vw; font-family: 'Ultra', serif; color: white;text-shadow: 2px 2px 4px #000000">
+            <span class="align-center">Consultancy</span>
+          </h2>
+        </div>
+        <div class="col-md-12 col-lg-6 text-white">
+			<form method="POST">
+				{% csrf_token %}
+				<fieldset class="form-group">
+					<legend class="border-bottom mb-4">Login</legend>
+					{{ form|crispy }}
+				</fieldset>
+				<div class="form-group">
+					<button class="btn btn-info" type="submit">Login</button>
+				</div>
+			</form>
+      	</div>
+	</div>
+</div>
+<!-- <div class="mx-auto d-flex justify-content-center align-items-center">
 	<div class="content-section p-5 bg-dark text-white">
 		<form method="POST">
 			{% csrf_token %}
@@ -18,5 +42,5 @@ Login
 			</div>
 		</form>
 	</div>
-</div>
+</div> -->
 {% endblock content %}

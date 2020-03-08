@@ -1,0 +1,37 @@
+{% extends 'owner/CAbase.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+ Client's Payment Details
+{% endblock title %}
+
+{% block sidebar %}
+{% if request.user.isCA %}
+{% include 'owner/CAsidebar.html' %}
+{% else %}
+{% include 'worker/workerSidebar.html' %}
+{% endif %}
+{% endblock sidebar %}
+
+{% block header %}
+<h2 style="margin: 5px"> Client's Payment Details</h2>
+{% endblock header %}
+
+{% block content %}
+<div class="container">
+        {% if payments %}
+        {% for PaymentData in payments %}
+        <div class="jumbotron p-5">
+            <h5>Invoice no.: {{PaymentData.id}}</h5> 
+            <h5>Client name:</h5>{{ PaymentData.for_client }}
+            <h5>Task id:</h5> {{PaymentData.for_task}}
+            <h5>Date:</h5> {{PaymentData.dated}}
+            <h5>Amount:</h5> {{PaymentData.value}}
+            <h5>Payment method:</h5> {{PaymentData.payment_method}}
+            <h5>Details:</h5> {{PaymentData.card_number}}
+        </div>
+        {% endfor %}
+        {% else %}
+        <h3>No payments yet</h3>
+        {% endif %}
+</div>
+{% endblock content %}

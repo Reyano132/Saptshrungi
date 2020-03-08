@@ -14,12 +14,14 @@
 {% endblock header %}
 
 {% block content %}
-<div class="container">
-    <form>
-        <h4>Duration:</h4>
-        <h4>From:</h4><input type="date" name="from_date" id="from_date">
-        <h4>To:</h4><input type="date" name="to_date" id="to_date">
-        
-    </form>
-</div>
+<form method="POST">
+    {% csrf_token %}
+    <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Generate Report</legend>
+        {{ form|crispy }}
+    </fieldset>
+    <div class="form-group">
+        <button class="btn btn-outline-info" type="submit">GetReport</button>
+    </div>
+</form>
 {% endblock content %}

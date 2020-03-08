@@ -5,12 +5,18 @@ from django.views import generic
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.core import serializers
+from gstClient.models import GSTType
 
 def addService(request):
 	if request.method=='POST':
 		form=AddServiceForm(request.POST)
 		if form.is_valid():
 			service=form.save()
+			temp=Service.objects.get(pk=service.pk)
+			if(temp.isGST_Service):
+				t=GSTType()
+				t.gst_type=temp
+				t.save()
 			return redirect('service.serviceDetails',pk=service.pk)
 	else:
 		form=AddServiceForm()

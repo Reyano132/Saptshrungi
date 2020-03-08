@@ -1,0 +1,50 @@
+{% extends 'owner/CAbase.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+ GST Clients
+{% endblock title %}
+
+
+{% block sidebar %}
+{% if request.user.isCA %}
+{% include 'owner/CAsidebar.html' %}
+{% else %}
+{% include 'worker/workerSidebar.html' %}
+{% endif %}
+{% endblock sidebar %}
+
+{% block header %}
+<h2 style="margin: 5px">GST Clients</h2>
+{% endblock header %}
+
+
+{% block content %}
+<button class="btn btn-outline-info" ><a href="{% url 'gst.getGSTClient' %}">Back</a></button><br><br>
+<div class="d-md-flex h-md-100 align-items-center">
+    <div class="col-md-6">
+        <div class="container">
+            <h3>Completed</h3>
+            <table class="table table-striped table-hover">
+            <tbody>
+            {% for client in completed_clients %}
+            <tr><td><a href="{% url 'client.clientDetails' client.id %}">{{ client }}</a></td></tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div> 
+    </div>
+    <div class="col-md-6">
+        <div class="container">
+            <h3>Incomplete</h3>
+            <table class="table table-striped table-hover">
+            <tbody>
+            {% for client in incompleted_clients %}
+            <tr><td><a href="{% url 'client.clientDetails' client.id %}">{{ client }}</a></td></tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div> 
+    </div>
+</div>
+    
+{% endblock content %}

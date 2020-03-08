@@ -11,6 +11,7 @@ class Client(models.Model):
 	address=models.TextField()
 	aadhar_number=models.BigIntegerField(null=True,blank=True)
 	pan_number=models.CharField(max_length=20,blank=True)
+	isGSTClient=models.BooleanField(default=False)
 
 	def get_absolute_url(self):
 		return reverse('owner.clientDetails',kwargs={'pk':self.pk})

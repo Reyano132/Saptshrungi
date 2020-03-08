@@ -36,6 +36,9 @@
     <a href="{% url 'service.updateService' service.id %}" class="btn btn-outline-primary">Edit</a>
     <a href="{% url 'task.taskCreated' service.id %}" class="btn btn-outline-primary">Tasks Created</a>
     <a href="{% url 'service.deleteService' service.id %}" class="btn btn-outline-danger">Delete</a>
+    {% if not service.isGST_Service %}
+    <a href=# class="btn btn-outline-danger">Add as GST service</a>
+    {% endif %}
   </div>
 </div>
 </div>

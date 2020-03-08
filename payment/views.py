@@ -12,15 +12,16 @@ from django.http import HttpResponse
 from django.views.generic import View
 from saptshrungi.utils import render_to_pdf 
 from django.template.loader import get_template
+from django.utils import timezone
+import datetime
 # Create your views here.
 
 def createPayment(request,pk):
 	if request.method=='POST':
 		form=CreatePaymentForm(request.POST)
 		if form.is_valid():
+			print(form.cleaned_data['dated'])
 			payment=form.save()
-			#print('ghfjhgjghjg',payment.pk)
-			#return redirect('payment.PaymentDetails',pk=payment.pk)
 			return redirect('payment.generatePDF',pk=payment.pk)
 	else:
 		form=CreatePaymentForm()
@@ -33,21 +34,25 @@ def createPayment(request,pk):
 	return render(request,'payment/createPayment.html',{'form':form})
 
 
-class PaymentDetails(generic.DetailView):
-	model=PaymentData
-	template_name='payment/paymentDetails.html'
-	fields = ['for_client', 'for_task','dated','value','payment_method']
+def getPaymentsForClient(request,pk):
+	payments=PaymentData.objects.filter(for_client=Client.objects.get(pk=pk))
+	return render(request,'payment/clientPaymentDetails.html',{'payments':payments})
+
+def getPaymentsForTask(request,pk):
+	payments=PaymentData.objects.filter(for_task=Task.objects.get(pk=pk))
+	return render(request,'payment/paymentDetails.html',{'payments':payments,'taskid':pk})
 
 
 class GeneratePdf(View):
 	def get(self, request,pk, *args, **kwargs):
 		template=get_template('payment/invoice.html')
 		p=PaymentData.objects.get(pk=pk)
+		print('pdg',p.dated.date())
 		data = {
-			'today': 'monday', 
-			'amount': '200',
+			'today': p.dated.date(), 
+			'amount': p.value,
 			'customer_name': p.for_client ,
-			'order_id': '123',
+			'order_id': p.pk+1000,
 		}
 		#html = template.render(data)
 		pdf = render_to_pdf('payment/invoice.html', data)

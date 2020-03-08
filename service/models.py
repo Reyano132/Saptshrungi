@@ -13,6 +13,7 @@ class Service(models.Model):
 		max_length=(100 * 30),
 		null=True,blank=True
     )
+	isGST_Service=models.BooleanField(default=False)
 	def get_absolute_url(self):
 		return reverse('owner.serviceDetails',kwargs={'pk':self.pk})
 

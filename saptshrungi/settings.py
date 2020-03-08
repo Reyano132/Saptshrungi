@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'channels',
+    'gstClient.apps.GstclientConfig',
     'attachment.apps.AttachmentConfig',
     'discussion.apps.DiscussionConfig',
     'task.apps.TaskConfig',

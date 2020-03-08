@@ -36,5 +36,16 @@
             <li>
                 <a href="{% url 'report.getReport' %}">Report</a>
             </li>
+            <li>
+                <a href="#gstSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">GST</a>
+                <ul class="collapse list-unstyled" id="gstSubmenu">
+                    <li>
+                        <a href="{% url 'gst.getGSTClient' %}">GST Client</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'gst.getGSTType' %}">GST service type</a>
+                    </li>
+                </ul>
+            </li>
         </ul>
 </nav>

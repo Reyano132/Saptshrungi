@@ -4,6 +4,8 @@ from django.core.mail import send_mail
 from client.models import Client
 from task.models import Task
 from django.contrib import messages
+from gstClient.models import GSTClient,GSTType
+import datetime
 # Create your views here.
 #DataFlair #Send Email
 def sendEmail(request, cq, tq):
@@ -19,6 +21,15 @@ def sendEmail(request, cq, tq):
     task=Task.objects.get(pk=tq)
     task.isCompleted=True
     task.save()
+    tmp_service=Task.objects.get(pk=tq).service
+    if(tmp_service.isGST_Service):
+        t=GSTClient()
+        t.month=datetime.datetime.today().strftime('%B')
+        t.year=datetime.datetime.today().year
+        t.gst_type=GSTType.objects.get(gst_type=tmp_service)
+        t.client=Client.objects.get(pk=cq)
+        t.save()
+
     return redirect(request.META['HTTP_REFERER'])
        
 

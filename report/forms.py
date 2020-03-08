@@ -7,8 +7,11 @@ class DateInput(forms.DateInput):
 
 
 class GenerateReportForm(forms.ModelForm):
+	from_date=forms.DateField(widget=DateInput)
+	to_date=forms.DateField(widget=DateInput)
 	class Meta:
 		model=ReportData
+		fields=['from_date','to_date','client_name','employee_name']
 
 	def __init__(self, *args, **kwargs):
 		super(GenerateReportForm, self).__init__(*args, **kwargs)

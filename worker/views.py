@@ -22,7 +22,7 @@ class getNotificationADayAhead(generic.View):
 		tmp=[]
 		for task in tasks:
 			service=task.service.name
-			client=task.for_client.first_name+' '+task.for_client.middle_name+' '+task.for_client.last_name
+			client=task.for_client.first_name+' '+task.for_client.last_name
 			emp=task.assigned_to.first_name+' '+task.assigned_to.last_name
 			tmp.append({'pk':task.pk,'client':client,'service':service,'emp':emp})
 		data={'tasks':tmp}
@@ -36,7 +36,7 @@ class getNotificationOnDueDay(generic.View):
 		tmp=[]
 		for task in tasks:
 			service=task.service.name
-			client=task.for_client.first_name+' '+task.for_client.middle_name+' '+task.for_client.last_name
+			client=task.for_client.first_name+' '+task.for_client.last_name
 			emp=task.assigned_to.first_name+' '+task.assigned_to.last_name
 			tmp.append({'pk':task.pk,'client':client,'service':service,'emp':emp})
 		data={'tasks':tmp}
